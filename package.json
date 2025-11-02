@@ -9,6 +9,9 @@
     "lint": "next lint",
     "format": "prettier --write ."
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "next": "^15.0.0",
     "react": "^19.0.0",

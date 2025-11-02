@@ -1,180 +1,130 @@
-# 酒别重逢
+# 酒别重逢 - 自调酒知识助手网站
 
-一个关于自调酒的灵感与知识助手，包含 AI 调酒助手、调研数据可视化和中国自调酒发展历程。
+一个基于 Next.js 15 的现代化自调酒知识平台，包含 AI 调酒助手、数据可视化和历史发展历程。
 
 ## 技术栈
 
-- **框架**: Next.js 15 (App Router) + TypeScript
-- **样式**: Tailwind CSS + shadcn/ui
+- **框架**: Next.js 15 (App Router)
+- **语言**: TypeScript
+- **样式**: Tailwind CSS
+- **UI 组件**: shadcn/ui, Radix UI
 - **图标**: lucide-react
-- **数据可视化**: Apache ECharts (按需加载)
-- **AI 服务**: OpenAI API
-- **文档渲染**: react-markdown + remark-gfm
+- **图表**: Apache ECharts (按需加载)
+- **Markdown 渲染**: react-markdown
+- **API 调用**: DeepSeek API
 
-## 功能特性
+## 本地开发
 
-### 1. AI 调酒助手
-- 流式对话响应
-- 支持模型和温度选择
-- Markdown 渲染和代码块复制
-- 预置示例问题
+### 环境要求
 
-### 2. 调研数据可视化
-- 口味偏好分布（玫瑰饼图）
-- 自调频率 vs 花费散点图
-- 工具拥有率雷达图
-- 原料 Top10 条形图
-- 时间趋势折线图（按月）
-- 多维度筛选（年龄段、性别、地区、频率、是否含酒精、味型偏好）
+- Node.js 18+ 
+- npm 或 pnpm
 
-### 3. 发展历程
-- 交互式时间线
-- Markdown 内容渲染
-- 年份节点导航
+### 安装步骤
 
-## 安装与运行
-
-### 1. 安装依赖
+1. 克隆仓库并安装依赖：
 
 ```bash
+npm install
+# 或
 pnpm install
 ```
 
-### 2. 配置环境变量
-
-复制 `.env.example` 为 `.env.local`：
+2. 创建环境变量文件 `.env.local`：
 
 ```bash
-cp .env.example .env.local
+OPENAI_API_KEY=your_deepseek_api_key_here
 ```
 
-在 `.env.local` 中填入你的 OpenAI API Key：
-
-```
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-### 3. 启动开发服务器
+3. 启动开发服务器：
 
 ```bash
+npm run dev
+# 或
 pnpm dev
 ```
 
-访问 [http://localhost:3000](http://localhost:3000) 查看应用。
+4. 访问 [http://localhost:3000](http://localhost:3000)
 
-### 4. 构建生产版本
+## Vercel 部署
 
-```bash
-pnpm build
+### 部署步骤
+
+1. 将代码推送到 GitHub/GitLab/Bitbucket
+
+2. 在 [Vercel](https://vercel.com) 导入项目
+
+3. **重要**: 在 Vercel 项目设置中添加环境变量：
+   - `OPENAI_API_KEY`: 你的 DeepSeek API 密钥
+
+4. 部署配置会自动检测 Next.js 框架
+
+### 环境变量配置
+
+在 Vercel 项目设置 > Environment Variables 中添加：
+
+```
+OPENAI_API_KEY=sk-your-deepseek-api-key
 ```
 
-### 5. 启动生产服务器
+### 常见部署问题
 
-```bash
-pnpm start
-```
+1. **构建失败**: 
+   - 检查 Node.js 版本（推荐 18+）
+   - 确保所有依赖都正确安装
+   - 查看 Vercel 构建日志中的具体错误
+
+2. **API 路由错误**:
+   - 确保环境变量 `OPENAI_API_KEY` 已正确配置
+   - 检查 API 路由的 runtime 设置（Node.js）
+
+3. **文件读取错误**:
+   - 确保 `data/` 目录中的文件已提交到 Git
+   - 检查文件路径是否正确
 
 ## 项目结构
 
 ```
-.
-├── app/                      # Next.js App Router
-│   ├── api/                  # API 路由
-│   │   ├── chat/             # AI 聊天 API
-│   │   ├── metrics/          # 数据指标 API
-│   │   └── history/          # 历史内容 API
-│   ├── layout.tsx            # 根布局
-│   ├── page.tsx              # 主页面
-│   └── globals.css           # 全局样式
-├── components/               # React 组件
-│   ├── ui/                   # shadcn/ui 基础组件
-│   ├── Charts/               # 图表组件
-│   ├── ChatPanel.tsx         # 聊天面板
-│   ├── Message.tsx           # 消息组件
-│   ├── HistoryTimeline.tsx   # 历史时间线
-│   └── MDXContent.tsx        # Markdown 内容渲染
-├── lib/                      # 工具库
-│   ├── openai.ts             # OpenAI 客户端封装
-│   ├── echarts.ts            # ECharts 初始化
-│   ├── survey.ts             # 调研数据过滤与聚合
-│   ├── history.ts            # 历史内容解析
-│   ├── rate-limit.ts         # 速率限制
-│   └── utils.ts              # 工具函数
-└── data/                     # 数据文件
-    ├── survey.json           # 调研数据
-    └── history.md            # 历史内容
+├── app/                    # Next.js App Router 页面
+│   ├── api/                # API 路由
+│   │   ├── chat/          # AI 聊天 API
+│   │   ├── metrics/       # 数据统计 API
+│   │   └── history/       # 历史数据 API
+│   ├── layout.tsx         # 根布局
+│   └── page.tsx           # 首页
+├── components/            # React 组件
+│   ├── ui/               # UI 基础组件
+│   ├── Charts/           # 图表组件
+│   ├── ChatPanel.tsx     # AI 聊天面板
+│   └── HistoryTimeline.tsx # 历史时间线
+├── data/                 # 数据文件
+│   ├── survey.json      # 调研数据
+│   └── history.md       # 历史记录
+├── lib/                 # 工具函数
+│   ├── openai.ts        # DeepSeek API 封装
+│   ├── survey.ts        # 数据过滤和聚合
+│   └── history.ts       # 历史数据解析
+└── public/              # 静态资源
 ```
 
-## 部署到 Vercel
+## 功能特性
 
-1. 将代码推送到 GitHub 仓库
-2. 在 [Vercel](https://vercel.com) 中导入项目
-3. 在项目设置中添加环境变量 `OPENAI_API_KEY`
-4. 部署完成
+- ✅ AI 调酒助手（流式对话）
+- ✅ 数据可视化（5 种图表）
+- ✅ 历史发展历程（时间线展示）
+- ✅ 响应式设计（移动端适配）
+- ✅ 按需加载（性能优化）
 
-## 开发脚本
+## 开发命令
 
-- `pnpm dev` - 启动开发服务器
-- `pnpm build` - 构建生产版本
-- `pnpm start` - 启动生产服务器
-- `pnpm lint` - 运行 ESLint
-- `pnpm format` - 格式化代码
-
-## 数据模型
-
-### survey.json
-
-每条记录包含以下字段：
-
-- `id`: 唯一标识符
-- `ageGroup`: 年龄段 ("18-22" | "23-26" | "27-30")
-- `gender`: 性别 ("男" | "女" | "其他/不便透露")
-- `region`: 地区（七个地区）
-- `frequencyPerWeek`: 每周调酒次数 (0-7)
-- `avgCostPerDrink`: 平均每杯花费（人民币）
-- `isAlcoholic`: 是否含酒精
-- `flavor`: 味型偏好
-- `tools`: 工具拥有情况
-- `topIngredients`: 常用原料（1-3 个）
-- `month`: 调研月份 (YYYY-MM)
-
-### history.md
-
-Markdown 文件，包含 frontmatter 和正文内容：
-
-```markdown
----
-items:
-  - year: 1920
-    title: 标题
-    link: https://example.com
----
-正文内容...
+```bash
+npm run dev      # 启动开发服务器
+npm run build    # 构建生产版本
+npm run start    # 启动生产服务器
+npm run lint     # 代码检查
+npm run format   # 代码格式化
 ```
 
-## 性能优化
-
-- 图表组件懒加载
-- API 响应缓存
-- 图片优化
-- 代码分割
-- Edge Runtime 优先
-
-## 可访问性
-
-- 所有交互控件具备 label
-- 键盘导航支持
-- 焦点可见性
-- ARIA 标签
-
-## 安全
-
-- API Key 仅在服务端可见
-- 基于 IP 的速率限制
-- 输入验证（zod）
-- CORS 配置
-
-## 许可证
+## License
 
 MIT
-
